@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PARCIAL1B.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<equiposContext>(options =>
+builder.Services.AddDbContext<parcialContexto>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("equiposDbConnection")
+        builder.Configuration.GetConnectionString("parcialDbConnection")
         )
         );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

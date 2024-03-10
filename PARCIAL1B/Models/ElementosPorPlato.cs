@@ -12,9 +12,9 @@ namespace PARCIAL1B.Models
 
         public int ElementoID { get; set; }
 
-        public int? Cantidad { get; set; }
+        public decimal Cantidad { get; set; }
 
-        public int? Estado { get; set; }
+        public string Estado { get; set; }
 
        
     }

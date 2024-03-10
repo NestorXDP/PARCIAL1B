@@ -10,11 +10,11 @@ namespace PARCIAL1B.Models
 
         public string Elemento { get; set; }
 
-        public int CantidadMinima { get; set; }
+        public decimal CantidadMinima { get; set; }
 
-        public int? UnidadMedia { get; set; }
+        public string UnidadMedia { get; set; }
 
-        public int? Costo { get; set; }
+        public decimal Costo { get; set; }
 
         public string Estado { get; set; }
 
