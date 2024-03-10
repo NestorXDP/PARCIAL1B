@@ -104,7 +104,7 @@ namespace PARCIAL1B.Controllers
             [Route("eliminar/{id}")]
             public IActionResult EliminarElemento(int id)
             {
-                Elementos? elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.EmpresaID == id);
+                Elementos? elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.ElementoID == id);
 
                 if (elemento == null)
                 {
