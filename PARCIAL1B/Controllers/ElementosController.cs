@@ -90,7 +90,7 @@ namespace PARCIAL1B.Controllers
 
                 elementoActual.Elemento = elementoModificar.Elemento;
                 elementoActual.CantidadMinima = elementoModificar.CantidadMinima;
-                elementoActual.UnidadMedia = elementoModificar.UnidadMedia;
+                elementoActual.UnidadMedida = elementoModificar.UnidadMedida;
                 elementoActual.Costo = elementoModificar.Costo;
                 elementoActual.Estado = elementoModificar.Estado;
 

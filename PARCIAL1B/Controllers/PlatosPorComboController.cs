@@ -74,7 +74,6 @@ namespace PARCIAL1B.Controllers
                 return NotFound();
             }
             platoPorComboActual.EmpresaID = platoPorComboModificar.EmpresaID;
-            platoPorComboActual.ComboID = platoPorComboModificar.ComboID;
             platoPorComboActual.PlatoID = platoPorComboModificar.PlatoID;
             platoPorComboActual.Estado = platoPorComboModificar.Estado;
 
