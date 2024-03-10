@@ -5,6 +5,7 @@ namespace PARCIAL1B.Models
     public class PlatosPorCombo
     {
         [Key]
+        public int PlatosPorComboID { get; set; }
 
         public int EmpresaID { get; set; }
 

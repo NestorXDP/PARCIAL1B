@@ -4,6 +4,7 @@ using PARCIAL1B.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Hosting;
 
 namespace PARCIAL1B.Controllers
 {
@@ -19,6 +20,7 @@ namespace PARCIAL1B.Controllers
         }
 
         [HttpGet]
+        [Route("GetAll")]
         public IActionResult Get()
         {
             List<ElementosPorPlato> listadoElementosPorPlato = _parcialContexto.ElementosPorPlato.ToList();
@@ -33,10 +35,10 @@ namespace PARCIAL1B.Controllers
 
         //BUSCAR POR ID
         [HttpGet]
-        [Route("GetById/{empresaId}/{platoId}/{elementoId}")]
-        public IActionResult GetById(int empresaId, int platoId, int elementoId)
+        [Route("GetById/{ElementoPorPlatoID}")]
+        public IActionResult GetById(int id)
         {
-            ElementosPorPlato elementoPorPlato = _parcialContexto.ElementosPorPlato.FirstOrDefault(e => e.EmpresaId == empresaId && e.PlatoID == platoId && e.ElementoID == elementoId);
+            ElementosPorPlato? elementoPorPlato = _parcialContexto.ElementosPorPlato.FirstOrDefault(e => e.EmpresaId == id);
 
             if (elementoPorPlato == null)
             {
@@ -67,19 +69,23 @@ namespace PARCIAL1B.Controllers
 
         //ACTUALIZAR
 
+
         [HttpPut]
-        [Route("actualizar/{empresaId}/{platoId}/{elementoId}")]
-        public ActionResult ActualizarElementoPorPlato(int empresaId, int platoId, int elementoId, [FromBody] ElementosPorPlato elementoPorPlatoModificar)
+        [Route("Actualizar/{ElementoPorPlatoID}")]
+        public IActionResult actualizarElementosPorPlato(int id, [FromBody] ElementosPorPlato elementosPorPlatoModiicar)
         {
-            ElementosPorPlato elementoPorPlatoActual = _parcialContexto.ElementosPorPlato.FirstOrDefault(e => e.EmpresaId == empresaId && e.PlatoID == platoId && e.ElementoID == elementoId);
+            ElementosPorPlato? elementoPorPlatoActual = (from e in _parcialContexto.ElementosPorPlato where e.ElementoPorPlatoID == id select e).FirstOrDefault();
 
             if (elementoPorPlatoActual == null)
             {
                 return NotFound();
             }
 
-            elementoPorPlatoActual.Cantidad = elementoPorPlatoModificar.Cantidad;
-            elementoPorPlatoActual.Estado = elementoPorPlatoModificar.Estado;
+            elementoPorPlatoActual.EmpresaId = elementosPorPlatoModiicar.EmpresaId;
+            elementoPorPlatoActual.PlatoID = elementosPorPlatoModiicar.PlatoID;
+            elementoPorPlatoActual.ElementoID = elementosPorPlatoModiicar.ElementoID;
+            elementoPorPlatoActual.Cantidad = elementosPorPlatoModiicar.Cantidad;
+            elementoPorPlatoActual.Estado = elementosPorPlatoModiicar.Estado;
 
             _parcialContexto.Entry(elementoPorPlatoActual).State = EntityState.Modified;
             _parcialContexto.SaveChanges();
@@ -87,18 +93,20 @@ namespace PARCIAL1B.Controllers
             return Ok(elementoPorPlatoActual);
         }
 
+        
+
         //BORRAR
         [HttpDelete]
-        [Route("eliminar/{empresaId}/{platoId}/{elementoId}")]
-        public IActionResult EliminarElementoPorPlato(int empresaId, int platoId, int elementoId)
+        [Route("eliminar/{ElementoPorPlatoID}")]
+        public IActionResult EliminarElemento(int id)
         {
-            ElementosPorPlato elementoPorPlato = _parcialContexto.ElementosPorPlato.FirstOrDefault(e => e.EmpresaId == empresaId && e.PlatoID == platoId && e.ElementoID == elementoId);
+            ElementosPorPlato? elementoPorPlato = (from e in _parcialContexto.ElementosPorPlato where e.ElementoPorPlatoID == id select e).FirstOrDefault();
 
             if (elementoPorPlato == null)
             {
                 return NotFound();
             }
-
+            _parcialContexto.ElementosPorPlato.Attach(elementoPorPlato);
             _parcialContexto.ElementosPorPlato.Remove(elementoPorPlato);
             _parcialContexto.SaveChanges();
 

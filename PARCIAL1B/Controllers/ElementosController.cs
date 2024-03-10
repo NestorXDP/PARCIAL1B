@@ -19,6 +19,7 @@ namespace PARCIAL1B.Controllers
             }
 
             [HttpGet]
+            [Route("GetAll")]
             public IActionResult Get()
             {
                 List<Elementos> listadoElementos = _parcialContexto.Elementos.ToList();
@@ -35,7 +36,7 @@ namespace PARCIAL1B.Controllers
             [Route("GetById/{id}")]
             public IActionResult GetById(int id)
             {
-                Elementos elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.EmpresaID == id);
+                Elementos? elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.EmpresaID == id);
 
                 if (elemento == null)
                 {
@@ -49,7 +50,7 @@ namespace PARCIAL1B.Controllers
             [Route("Find/{filtro}")]
             public IActionResult FindByElement(string filtro)
             {
-                Elementos elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.Elemento.Contains(filtro));
+                Elementos? elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.Elemento.Contains(filtro));
 
                 if (elemento == null)
                 {
@@ -60,7 +61,7 @@ namespace PARCIAL1B.Controllers
             }
 
             [HttpPost]
-            [Route("add")]
+            [Route("Agregar")]
             public IActionResult GuardarElemento([FromBody] Elementos elemento)
             {
                 try
@@ -80,7 +81,7 @@ namespace PARCIAL1B.Controllers
             [Route("actualizar/{id}")]
             public ActionResult ActualizarElemento(int id, [FromBody] Elementos elementoModificar)
             {
-                Elementos elementoActual = _parcialContexto.Elementos.FirstOrDefault(e => e.EmpresaID == id);
+                Elementos? elementoActual = _parcialContexto.Elementos.FirstOrDefault(e => e.EmpresaID == id);
 
                 if (elementoActual == null)
                 {
@@ -103,7 +104,7 @@ namespace PARCIAL1B.Controllers
             [Route("eliminar/{id}")]
             public IActionResult EliminarElemento(int id)
             {
-                Elementos elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.EmpresaID == id);
+                Elementos? elemento = _parcialContexto.Elementos.FirstOrDefault(e => e.EmpresaID == id);
 
                 if (elemento == null)
                 {

@@ -19,6 +19,7 @@ namespace PARCIAL1B.Controllers
         }
 
         [HttpGet]
+        [Route("GetAll")]
         public IActionResult Get()
         {
             List<PlatosPorCombo> listadoPlatosPorCombo = _parcialContexto.PlatosPorCombo.ToList();
@@ -32,10 +33,10 @@ namespace PARCIAL1B.Controllers
         }
 
         [HttpGet]
-        [Route("GetById/{empresaId}/{comboId}/{platoId}")]
-        public IActionResult GetById(int empresaId, int comboId, int platoId)
+        [Route("GetByIdp/{PlatosPorComboID}")]
+        public IActionResult GetById(int id)
         {
-            PlatosPorCombo platoPorCombo = _parcialContexto.PlatosPorCombo.FirstOrDefault(e => e.EmpresaID == empresaId && e.ComboID == comboId && e.PlatoID == platoId);
+            PlatosPorCombo? platoPorCombo = _parcialContexto.PlatosPorCombo.FirstOrDefault(e => e.PlatosPorComboID == id);
 
             if (platoPorCombo == null)
             {
@@ -46,7 +47,7 @@ namespace PARCIAL1B.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("addp")]
         public IActionResult GuardarPlatoPorCombo([FromBody] PlatosPorCombo platoPorCombo)
         {
             try
@@ -63,16 +64,18 @@ namespace PARCIAL1B.Controllers
         }
 
         [HttpPut]
-        [Route("actualizar/{empresaId}/{comboId}/{platoId}")]
-        public ActionResult ActualizarPlatoPorCombo(int empresaId, int comboId, int platoId, [FromBody] PlatosPorCombo platoPorComboModificar)
+        [Route("actualizarp/{id}")]
+        public ActionResult ActualizarPlatoPorCombo(int id, [FromBody] PlatosPorCombo platoPorComboModificar)
         {
-            PlatosPorCombo platoPorComboActual = _parcialContexto.PlatosPorCombo.FirstOrDefault(e => e.EmpresaID == empresaId && e.ComboID == comboId && e.PlatoID == platoId);
-
+            PlatosPorCombo? platoPorComboActual = (from p in _parcialContexto.PlatosPorCombo where p.PlatosPorComboID == id select p).FirstOrDefault();
+            
             if (platoPorComboActual == null)
             {
                 return NotFound();
             }
-
+            platoPorComboActual.EmpresaID = platoPorComboModificar.EmpresaID;
+            platoPorComboActual.ComboID = platoPorComboModificar.ComboID;
+            platoPorComboActual.PlatoID = platoPorComboModificar.PlatoID;
             platoPorComboActual.Estado = platoPorComboModificar.Estado;
 
             _parcialContexto.Entry(platoPorComboActual).State = EntityState.Modified;
@@ -82,11 +85,11 @@ namespace PARCIAL1B.Controllers
         }
 
         [HttpDelete]
-        [Route("eliminar/{empresaId}/{comboId}/{platoId}")]
-        public IActionResult EliminarPlatoPorCombo(int empresaId, int comboId, int platoId)
+        [Route("eliminarp/{PlatosPorComboID}")]
+        public IActionResult EliminarPlatoPorCombo(int id)
         {
-            PlatosPorCombo platoPorCombo = _parcialContexto.PlatosPorCombo.FirstOrDefault(e => e.EmpresaID == empresaId && e.ComboID == comboId && e.PlatoID == platoId);
-
+            PlatosPorCombo? platoPorCombo = _parcialContexto.PlatosPorCombo.FirstOrDefault(p => p.PlatosPorComboID == id);
+            
             if (platoPorCombo == null)
             {
                 return NotFound();

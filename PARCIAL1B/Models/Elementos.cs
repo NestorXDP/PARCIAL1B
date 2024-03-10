@@ -5,7 +5,7 @@ namespace PARCIAL1B.Models
     public class Elementos
     {
         [Key]
-
+        public int ElementoID { get; set; }
         public int EmpresaID { get; set; }
 
         public string Elemento { get; set; }

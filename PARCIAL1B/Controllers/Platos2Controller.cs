@@ -18,7 +18,9 @@ namespace PARCIAL1B.Controllers
                 _parcialContexto = parcialContexto;
             }
 
-            public IActionResult Get()
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult Get()
             {
                 List<Platos> listadoPlatos = (from p in _parcialContexto.Platos
                                                select p).ToList();
@@ -35,7 +37,7 @@ namespace PARCIAL1B.Controllers
             [Route("GetById/{id}")]
             public IActionResult GetById(int id)
             {
-                Platos plato = _parcialContexto.Platos.FirstOrDefault(e => e.PlatoID == id);
+                Platos? plato = _parcialContexto.Platos.FirstOrDefault(e => e.PlatoID == id);
 
                 if (plato == null)
                 {
@@ -50,7 +52,7 @@ namespace PARCIAL1B.Controllers
             [Route("Find/{filtro}")]
             public IActionResult FindByDescription(string filtro)
             {
-                Platos plato = _parcialContexto.Platos.FirstOrDefault(e => e.DescripcionPlato.Contains(filtro));
+                Platos? plato = _parcialContexto.Platos.FirstOrDefault(e => e.DescripcionPlato.Contains(filtro));
 
                 if (plato == null)
                 {
@@ -86,7 +88,7 @@ namespace PARCIAL1B.Controllers
             [Route("actualizar/{id}")]
             public ActionResult ActualizarPlato(int id, [FromBody] Platos platoModificar)
             {
-                Platos platoActual = (from p in _parcialContexto.Platos where p.PlatoID == id select p).FirstOrDefault();
+                Platos? platoActual = (from p in _parcialContexto.Platos where p.PlatoID == id select p).FirstOrDefault();
 
                 if (platoActual == null)
                 {
@@ -110,7 +112,7 @@ namespace PARCIAL1B.Controllers
             [Route("eliminar/{id}")]
             public IActionResult EliminarPlato(int id)
             {
-                Platos plato = _parcialContexto.Platos.FirstOrDefault(p => p.PlatoID == id);
+                Platos? plato = _parcialContexto.Platos.FirstOrDefault(p => p.PlatoID == id);
 
                 if (plato == null)
                 {
