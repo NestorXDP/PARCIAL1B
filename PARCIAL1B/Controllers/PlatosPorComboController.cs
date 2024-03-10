@@ -126,7 +126,7 @@ namespace PARCIAL1B.Controllers
                                     elemento_costo = el.Costo
                                     
                                 }).ToList();
-
+            // Terminado
             if (listadoPlato == null)
             {
                 return NotFound();
