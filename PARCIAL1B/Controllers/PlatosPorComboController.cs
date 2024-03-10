@@ -102,29 +102,29 @@ namespace PARCIAL1B.Controllers
         }
         // FIN DEL CRUD
         [HttpGet]
-        [Route("Find2/{buscar}")]
-        public IActionResult BuscarPlato(int buscar)
+        [Route("FindFin/{buscar}")]
+        public IActionResult BuscarPlato1(int buscar)
         {
-            var listadoPlato = (from e in _parcialContexto.Elementos
-                                join t in _parcialContexto.ElementosPorPlato
-                                    on e.ElementoID equals t.ElementoID
-                                join m in _parcialContexto.Platos
-                                    on t.PlatoID equals m.PlatoID
-                                join ps in _parcialContexto.PlatosPorCombo
-                                on m.PlatoID equals ps.PlatoID
+            var listadoPlato = (from e in _parcialContexto.PlatosPorCombo
+                                join p in _parcialContexto.Platos 
+                                on e.PlatoID equals p.PlatoID
+                                join ep in _parcialContexto.ElementosPorPlato
+                                on p.PlatoID equals ep.PlatoID
+                                join el in _parcialContexto.Elementos
+                                on ep.ElementoID equals el.ElementoID
 
-                                where ps.ComboID == buscar
+                                where e.ComboID == buscar
 
                                 select new
                                 {
-                                    m.PlatoID,
-                                    m.NombrePlato,
-                                    m.DescripcionPlato,
-                                    m.Precio,
-                                    elemento_id = e.ElementoID,
-                                    elemento_nombre = e.Elemento,
-                                    elemento_costos = e.Costo,
-                                    elemento_estado = e.Estado
+                                    p.PlatoID,
+                                    p.NombrePlato,
+                                    p.DescripcionPlato,
+                                    p.Precio,
+                                    elementos_id = ep.ElementoID,
+                                    elemento_elemento = el.Elemento,
+                                    elemento_costo = el.Costo
+                                    
                                 }).ToList();
 
             if (listadoPlato == null)
