@@ -116,9 +116,41 @@ namespace PARCIAL1B.Controllers
 
                 return Ok(elemento);
             }
+        [HttpGet]
+        [Route("Find2/{buscar}")]
+        public IActionResult BuscarPlato(string buscar)
+        {
+            var listadoPlato = (from e in _parcialContexto.Elementos
+                                 join t in _parcialContexto.ElementosPorPlato
+                                     on e.ElementoID equals t.ElementoID
+                                 join m in _parcialContexto.Platos
+                                     on t.PlatoID equals m.PlatoID
+
+                                where m.NombrePlato.Contains(buscar)
+
+                                 select new
+                                 {
+                                     e.ElementoID,
+                                     e.EmpresaID,
+                                     e.Elemento,
+                                     e.CantidadMinima,
+                                     e.UnidadMedida,
+                                     e.Costo,
+                                     e.Estado,
+                                     plato_id = m.PlatoID,
+                                     nombre_plato = m.NombrePlato
+                                 }).ToList();
+
+            if (listadoPlato == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(listadoPlato);
+        }
 
         // FIN DEL CRUD
-        }
+    }
     }
 
 

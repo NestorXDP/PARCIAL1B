@@ -74,6 +74,7 @@ namespace PARCIAL1B.Controllers
                 return NotFound();
             }
             platoPorComboActual.EmpresaID = platoPorComboModificar.EmpresaID;
+            platoPorComboActual.ComboID = platoPorComboModificar.ComboID;
             platoPorComboActual.PlatoID = platoPorComboModificar.PlatoID;
             platoPorComboActual.Estado = platoPorComboModificar.Estado;
 
@@ -100,5 +101,38 @@ namespace PARCIAL1B.Controllers
             return Ok(platoPorCombo);
         }
         // FIN DEL CRUD
+        [HttpGet]
+        [Route("Find2/{buscar}")]
+        public IActionResult BuscarPlato(int buscar)
+        {
+            var listadoPlato = (from e in _parcialContexto.Elementos
+                                join t in _parcialContexto.ElementosPorPlato
+                                    on e.ElementoID equals t.ElementoID
+                                join m in _parcialContexto.Platos
+                                    on t.PlatoID equals m.PlatoID
+                                join ps in _parcialContexto.PlatosPorCombo
+                                on m.PlatoID equals ps.PlatoID
+
+                                where ps.ComboID == buscar
+
+                                select new
+                                {
+                                    m.PlatoID,
+                                    m.NombrePlato,
+                                    m.DescripcionPlato,
+                                    m.Precio,
+                                    elemento_id = e.ElementoID,
+                                    elemento_nombre = e.Elemento,
+                                    elemento_costos = e.Costo,
+                                    elemento_estado = e.Estado
+                                }).ToList();
+
+            if (listadoPlato == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(listadoPlato);
+        }
     }
 }
